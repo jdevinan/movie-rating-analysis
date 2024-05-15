@@ -1,0 +1,91 @@
+version: '3.5'
+
+services:
+  spark-master35:
+    image: bitnami/spark:3.5
+    container_name: spark-master35
+    hostname: spark-master35
+    ports:
+      - "8080:8080" # Spark Master Web UI
+      - "7077:7077" # Spark Master Port
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    volumes:
+      - ./apps:/opt/spark-apps
+      - ./data:/opt/spark-data
+      - ./data:/opt/bitnami/spark/data/
+    networks:
+      spark-netv3.5:
+        ipv4_address: 192.20.10.2
+    deploy:
+      resources:
+        limits:
+          cpus: "2" # Adjust CPU limit as needed
+          memory: 4g # Adjust memory limit as needed
+
+  spark-worker35-1:
+    image: bitnami/spark:3.5
+    container_name: spark-worker35-1
+    hostname: spark-worker35-1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master35:7077
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=8G
+      - SPARK_WORKER_PORT=8881
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    volumes:
+      - ./apps:/opt/spark-apps
+      - ./data:/opt/spark-data
+      - ./data:/opt/bitnami/spark/data/
+    ports:
+      - "8081:8881"
+    networks:
+      spark-netv3.5:
+        ipv4_address: 192.20.10.3
+    deploy:
+      resources:
+        limits:
+          cpus: "3" # Adjust CPU limit as needed
+          memory: 10g # Adjust memory limit as needed
+    depends_on:
+      - spark-master35
+
+  spark-worker33-2:
+    image: bitnami/spark:3.5
+    container_name: spark-worker35-2
+    hostname: spark-worker35-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master35:7077
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=8G
+      - SPARK_WORKER_PORT=8881
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    volumes:
+      - ./apps:/opt/spark-apps
+      - ./data:/opt/spark-data
+      - ./data:/opt/bitnami/spark/data/
+    ports:
+      - "8082:8881"
+    networks:
+      spark-netv3.5:
+        ipv4_address: 192.20.10.4
+    deploy:
+      resources:
+        limits:
+          cpus: "3" # Adjust CPU limit as needed
+          memory: 10g # Adjust memory limit as needed
+    depends_on:
+      - spark-master35
+
+networks:
+  spark-netv3.5:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.20.10.0/28

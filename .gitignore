@@ -1,0 +1,61 @@
+# SBT specific
+target/
+project/target/
+project/project/
+.cache/
+lib_managed/
+src_managed/
+.history
+dist/
+out/
+
+# Idea specific
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Mac specific
+.DS_Store
+
+# Thumbnails
+._*
+
+# Other files
+.classpath
+.project
+.settings/
+
+# Logs
+*.log
+
+# Simple Build Tool (sbt) specific
+.cache/
+lib_managed/
+src_managed/
+.ensime_cache/
+.idea/
+.cache-main/
+.DS_Store
+
+
+# IntelliJ
+*.ipr
+*.iws
+*.iml
+.idea/
+.idea_modules/
+.DS_Store
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/libraries
+*.sublime-workspace
+*.sublime-project
+.idea/
+
+# Spark-specific
+derby.log
+metastore_db/
+spark-warehouse/
